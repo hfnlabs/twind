@@ -25,6 +25,7 @@ import { parse, type ParsedDevRule } from '@twind/core'
 import { createIntellisenseContext } from './internal/create-context'
 import { spacify } from './internal/spacify'
 import { compareSuggestions } from './internal/compare-suggestion'
+import presetTailwind from '@twind/preset-tailwind'
 
 export * from './types'
 
@@ -523,14 +524,11 @@ function convert(
   md: string | null | undefined,
   format?: DocumentationForOptions['format'],
 ): string | null | Promise<string> {
-  if (md && format === 'html') {
-    return import('showdown').then((showdown) => {
-      const Converter = showdown.Converter || showdown.default.Converter
-      const converter = new Converter({ openLinksInNewWindow: true })
-      converter.setFlavor('github')
-      return converter.makeHtml(md)
-    })
-  }
+  return null
+}
 
-  return md ?? null
+export function createIntellisenseWithTailwind() {
+  return createIntellisense({
+    presets: [presetTailwind({ disablePreflight: true })],
+  })
 }
